@@ -16,6 +16,10 @@ public class StudentAndAcadmicInfo {
 	private char gender;
 	private float marks[] = new float[5];
 	private int rollNumber;
+	private char grade;
+	private float sum;
+	private String division;
+	private String status;
 	
 	StudentAndAcadmicInfo()
 	{
@@ -73,13 +77,68 @@ public class StudentAndAcadmicInfo {
 	public void setMarks(float[] marks) {
 		for( int i =0; i<5; i++) {
 			if( marks[i]>=0 && marks[i] <=100) {
-				this.marks = marks;
+				this.marks[i] = marks[i];
+				
 			}
-		else {
-			System.out.println("StudentAndAcadmicInfo :: setMarks :: Marks cannot be greater than 100 and less than 0.");
-		}
+			else {
+				System.out.println("StudentAndAcadmicInfo :: setMarks :: Marks cannot be greater than 100 and less than 0.Set default to 0");
+			   this.marks[i] =0;
+			}
 		}
 	}
+	
+	// checking grade by getting list of marks
+	public char getGrade() {
+		for(int i=0; i<5;i++) {
+			sum= sum+ this.marks[i];
+		}
+		// calculation of percentage : (sum of marks/ sum of max mark each)* 100
+		sum = (sum/500)*100;
+		System.out.println("percentage is : "+ sum);
+		if( sum>90) {
+			grade ='A';
+		}
+		else if(sum>70 && sum <=90) {
+			grade ='B';
+		}
+		else if ( sum>50 && sum <=70) {
+			grade ='C';
+		}
+		else if( sum>33.3 && sum<=50) {
+			grade ='D';
+		}
+		else  {
+			grade ='F';
+		}
+		return grade;
+	}
+	
+	// division calculation
+	 public String getDivision() {
+		 if(sum >60) {
+			 division ="First";
+		 }
+		 else if( sum >=33.3 && sum <=60) {
+			 division ="Second";
+		 }
+		 // if percentage is less than 33.3 %, setting default value of division is NA with error msg
+		 else {
+			  System.out.println("StudentAndAcadmicInfo:: getDivision:: Not Applicable.Default value to NA");
+			  division= "NA";
+		 }
+		return division;
+	 }
+	 
+	 // Status : Pass/Fail
+	 public String getStatus() {
+		 if( sum >=33.3 && sum<=100) {
+			 status= "Pass";
+		 }
+		 else {
+			 status ="Fail";
+		 }
+		 return status;
+	 }
 	public String getFullName()
 	{
 		if( firstName.isEmpty() && lastName.isEmpty() )

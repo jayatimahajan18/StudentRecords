@@ -20,12 +20,14 @@ public class AcadmeicClass {
 	}
 	private void printDetail( StudentAndAcadmicInfo obj )
 	{
-		//TO DO: Fill Rest of code
 		System.out.println("AcadmeicClass::printDetail Student Details Started \n");
 		System.out.println("Name: " + obj.getFullName() );
 		System.out.println("Age: " + obj.getAge() );
 		System.out.println("Gender: " + obj.getGender() );
-		
+		System.out.println("Roll number." + obj.getRollNumber());
+		System.out.println("Grade." + obj.getGrade());
+		System.out.println("Division." + obj.getDivision());
+		System.out.println("Status." + obj.getStatus());
 		System.out.println("AcadmeicClass::printDetail Student Details Ended \n");
 
 	}
