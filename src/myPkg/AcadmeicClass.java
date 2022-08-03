@@ -25,6 +25,7 @@ public class AcadmeicClass {
 		System.out.println("Name: " + obj.getFullName() );
 		System.out.println("Age: " + obj.getAge() );
 		System.out.println("Gender: " + obj.getGender() );
+		
 		System.out.println("AcadmeicClass::printDetail Student Details Ended \n");
 
 	}
@@ -66,36 +67,56 @@ public class AcadmeicClass {
 		Scanner scan = new Scanner(System.in);
 		do
 		{
-			//TO DO: Take input for marks and Roll no and add sysout statemetns
 			System.out.println("AcadmeicClass::addStudentDetail Enter First Name ");
 			String firstName = scan.nextLine();
-			System.out.println("AcadmeicClass::addStudentDetail Enter Last Name ");
 			
+			System.out.println("AcadmeicClass::addStudentDetail Enter Last Name ");
 			String lastName = scan.nextLine();
+			
 			System.out.println("AcadmeicClass::addStudentDetail Enter gender ");
-			//To DO: Handle Error Case
-			char gender = scan.nextLine().charAt(0);
+			// if user entered simply and move forward. It will update user with message.
+			String x= scan.nextLine() ;
+			if(x == "") {
+				System.out.println("AcadmeicClass:: addStudentDetail  No input for Gender");
+				break;
+			}
+				char gender = x.charAt(0);
+			
 			System.out.println("AcadmeicClass::addStudentDetail Enter age ");
-
 			byte age = scan.nextByte();
 			scan.nextLine();
+			
+			System.out.println("AcadmeicClass:: addStudentDetail Enter Marks for 5 subjects ");
+			float[] marks = new float[5];
+			for(int i=0; i<5; i++) {
+			 marks[i] = scan.nextFloat();
+			}
+			System.out.println("AcadmeicClass:: addStudentDetail Enter Roll number ");
+			int rollNumber = scan. nextInt();
+			
 			StudentAndAcadmicInfo student = new StudentAndAcadmicInfo();
 			student.setAge(age);
 			student.setFirstName(firstName);
 			student.setLastName(lastName);
 			student.setGender(gender);
+			student.setMarks(marks);
+			student.setRollNumber(rollNumber);
 			//storing this student in arrayList
 			studentList.add(student);
 			
+			
 			System.out.println("AcadmeicClass::addStudentDetail Want to Enter More.Press Y for continue else press any char ");
+			// Adding nextLine to consume \n left after rollnumber entered.(because of pressing enter and nextInt
+			// doesn't consume \n)
+			scan.nextLine();
 			String input = scan.nextLine();
-			//To DO: Handle Error Case
 			if( input.charAt(0) != 'y'&& input.charAt(0) != 'Y' )
 			{
 				System.out.println("AcadmeicClass::addStudentDetail Exiting!!");
 				break;
 			}
 
+			
 		}while( true );
 		
 	}
@@ -106,8 +127,9 @@ public class AcadmeicClass {
 		do
 		{
 			System.out.println("Welcome to class " + className );
-			//TO DO: Take input for marks and Roll no and add sysout statemetns
-			System.out.println("AcadmeicClass::studentMenu Option you want to select 1 for add, 2 show, 3 for search  ");
+			System.out.println("AcadmeicClass::studentMenu 1. Add");
+			System.out.println("AcadmeicClass::studentMenu 2. Show");
+			System.out.println("AcadmeicClass::studentMenu 3. Search");
 			int choice = scan.nextInt();
 			switch( choice )
 			{
@@ -119,12 +141,25 @@ public class AcadmeicClass {
 				break;
 			case 3:
 				searchMenu();
+				break;
+				
+			default:
+				System.out.println("AcadmeicClass::studentMenu  Invalid choice.");
 			}
 			scan.nextLine();
 			System.out.println("AcadmeicClass::studentMenu Want to Enter More.Press Y for continue else press any char ");
 
+			/* 
+			 * handling enter press by user inspite of giving value
+			 * --storing scan.nextLine90 into String variable and put null check 
+			 * if null value found, throw error and continue asking for student menu
+			 * else  --> stored variable with charAt will be continued.
+			 */
 			String input = scan.nextLine();
-			//To DO: Handle Error Case
+			if(input == "") {
+				System.out.println("AcadmeicClass::studentMenu Please enter choice");
+				continue;
+			}
 
 			if( input.charAt(0) != 'y'||input.charAt(0) != 'Y' )
 			{

@@ -7,7 +7,7 @@ package myPkg;
  * 1. User is able to add student records
  * 		Input: First Name, Last Name, Age, Gender, Marks for 5 Subjects, Roll Number
  * 2.User is able to delete record of student by roll number
- * 3. User is able to see list of all students with all details except first name and last name
+ * 3. User is able to see list of all students with all details except marks, first name and last name
  * 		3.1 Some additional details should be displayed too
  * 			a. Grade : If Perc > 90 : A
  * 							>70-90: B
@@ -25,6 +25,7 @@ package myPkg;
  * 		e. Status
  * 5. Show Toppers [top 5 ]
  * 6. Show Toppers for specfic Age [ex 15yrs]
+ * 7. Make rollnumber should be unique
  * 		
  * 
  * @author ishug
