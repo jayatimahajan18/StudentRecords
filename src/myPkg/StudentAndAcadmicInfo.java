@@ -96,7 +96,7 @@ public class StudentAndAcadmicInfo {
 	
 	// checking grade by getting list of marks
 	public char getGrade() {
-		System.out.println("percentage is : "+ percentage);
+		//System.out.println("percentage is : "+ percentage);
 		if( percentage>90) {
 			grade ='A';
 		}
