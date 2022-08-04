@@ -17,7 +17,7 @@ public class StudentAndAcadmicInfo {
 	private float marks[] = new float[5];
 	private int rollNumber;
 	private char grade;
-	private float sum;
+	private float percentage;
 	private String division;
 	private String status;
 	
@@ -85,26 +85,28 @@ public class StudentAndAcadmicInfo {
 			   this.marks[i] =0;
 			}
 		}
+		for(int i=0; i<5;i++) {
+			percentage= percentage+ this.marks[i];
+		}
+		// calculation of percentage : (sum of marks/ sum of max mark each)* 100
+		//reason to add percentage is : in case ever grade, division and status called before matks  , then how the percentage will be callculated
+		// that s they reason of calculating percentage within setMark().
+				percentage = (percentage/500)*100;
 	}
 	
 	// checking grade by getting list of marks
 	public char getGrade() {
-		for(int i=0; i<5;i++) {
-			sum= sum+ this.marks[i];
-		}
-		// calculation of percentage : (sum of marks/ sum of max mark each)* 100
-		sum = (sum/500)*100;
-		System.out.println("percentage is : "+ sum);
-		if( sum>90) {
+		System.out.println("percentage is : "+ percentage);
+		if( percentage>90) {
 			grade ='A';
 		}
-		else if(sum>70 && sum <=90) {
+		else if(percentage>70 && percentage <=90) {
 			grade ='B';
 		}
-		else if ( sum>50 && sum <=70) {
+		else if ( percentage>50 && percentage <=70) {
 			grade ='C';
 		}
-		else if( sum>33.3 && sum<=50) {
+		else if( percentage>33.3 && percentage<=50) {
 			grade ='D';
 		}
 		else  {
@@ -115,10 +117,10 @@ public class StudentAndAcadmicInfo {
 	
 	// division calculation
 	 public String getDivision() {
-		 if(sum >60) {
+		 if(percentage >60) {
 			 division ="First";
 		 }
-		 else if( sum >=33.3 && sum <=60) {
+		 else if( percentage >=33.3 && percentage <=60) {
 			 division ="Second";
 		 }
 		 // if percentage is less than 33.3 %, setting default value of division is NA with error msg
@@ -131,7 +133,7 @@ public class StudentAndAcadmicInfo {
 	 
 	 // Status : Pass/Fail
 	 public String getStatus() {
-		 if( sum >=33.3 && sum<=100) {
+		 if( percentage >=33.3 && percentage<=100) {
 			 status= "Pass";
 		 }
 		 else {

@@ -33,11 +33,43 @@ public class AcadmeicClass {
 	}
 	private void showStudentDetail()
 	{
-		for( int i=0 ; i < studentList.size(); i++ )
-		{
-			printDetail( studentList.get(i) );
-		}	
+		if(studentList.size()>0){
+			for( int i=0 ; i < studentList.size(); i++ )
+			{
+					printDetail( studentList.get(i) );
+			}
+		}
+		// adding check when arraylist is empty and use wants to view records
+		else {
+			System.out.println("AcadmeicClass:: showStudentDetail List is empty.No record to show");
+		}
 	}
+	/*
+	 * Delete record by rollnumber provided by user.
+	 * Asking user to pass rollnumber to remove from storage.
+	 *  onece rollnumber is received, start comparing with each objs present  inside  arraylist.
+	 */
+	private  void deleteRecordByRollnumber() {
+  
+		System.out.println("AcadmeicClass::deleteRecordByRollnumber entering into method");
+		Scanner scan = new Scanner(System.in);
+		System.out.println("AcadmeicClass::deleteRecordByRollnumber Enter rollnumber to be delete");
+		int rollnumber = scan.nextInt();
+		int flag=0;
+		for(int i=0; i< studentList.size(); i++) {
+			if( rollnumber == studentList.get(i).getRollNumber()){
+				studentList.remove(i);
+				flag++;
+				System.out.println("AcadmeicClass::deleteRecordByRollnumber Delete of record for  " + rollnumber + " is successfull");
+				break;
+			}				
+		}
+		if(flag ==0) {
+			System.out.println("AcadmeicClass::deleteRecordByRollnumber No record present with this  " + rollnumber);
+		}
+		System.out.println("AcadmeicClass::deleteRecordByRollnumber existing from delete record");
+	}
+	
 	
 	private void searchMenu()
 	{
@@ -131,7 +163,8 @@ public class AcadmeicClass {
 			System.out.println("Welcome to class " + className );
 			System.out.println("AcadmeicClass::studentMenu 1. Add");
 			System.out.println("AcadmeicClass::studentMenu 2. Show");
-			System.out.println("AcadmeicClass::studentMenu 3. Search");
+			System.out.println("AcadmeicClass::studentMenu 3. Delete record by rollnumber");
+			System.out.println("AcadmeicClass::studentMenu 4. Search");
 			int choice = scan.nextInt();
 			switch( choice )
 			{
@@ -142,6 +175,9 @@ public class AcadmeicClass {
 				showStudentDetail();
 				break;
 			case 3:
+				deleteRecordByRollnumber();
+				break;
+			case 4:
 				searchMenu();
 				break;
 				
@@ -171,5 +207,6 @@ public class AcadmeicClass {
 		}while( true );
 		
 	}
+	
 	
 }
