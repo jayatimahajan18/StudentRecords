@@ -85,19 +85,23 @@ public class StudentAndAcadmicInfo {
 			   this.marks[i] =0;
 			}
 		}
+		// to protect calling division, grade before marks array member. From marks percentage will be calculated and share for grade, division methods
 		for(int i=0; i<5;i++) {
 			percentage= percentage+ this.marks[i];
 		}
 		// calculation of percentage : (sum of marks/ sum of max mark each)* 100
-		//reason to add percentage is : in case ever grade, division and status called before matks  , then how the percentage will be callculated
+		//reason to add percentage is : in case ever grade, division and status called before marks  , then how the percentage will be calculated
 		// that s they reason of calculating percentage within setMark().
 				percentage = (percentage/500)*100;
 	}
 	
 	// checking grade by getting list of marks
 	public char getGrade() {
-		//System.out.println("percentage is : "+ percentage);
-		if( percentage>90) {
+		System.out.println("percentage is : "+ percentage);
+		if( percentage <=0 ) {
+			System.out.println("StudentAndAcadmicInfo :: getGrade :: Percentage cannot be negative");
+		}
+		else if( percentage>90) {
 			grade ='A';
 		}
 		else if(percentage>70 && percentage <=90) {
@@ -163,5 +167,11 @@ public class StudentAndAcadmicInfo {
 			this.rollNumber = rollNumber;
 		}
 	}
+	
+	public float getPercentage() {
+		return percentage;
+	}
+	
+	
 	
 }

@@ -1,10 +1,13 @@
 package myPkg;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Scanner;
 
 public class AcadmeicClass {
 	private ArrayList<StudentAndAcadmicInfo> studentList;
+	List<StudentAndAcadmicInfo> searchbyAgeList = new ArrayList<>();
 	private String className;
 	AcadmeicClass( String className )
 	{
@@ -12,6 +15,7 @@ public class AcadmeicClass {
 		//My Logs Format is :: ClassName::FunctionName:: Text/Msg
 		System.out.println("AcadmeicClass::AcadmeicClass Initalizing class " + className );
 		studentList = new ArrayList<StudentAndAcadmicInfo>();
+		
 	}
 	protected void finalize()  
 	{
@@ -26,8 +30,9 @@ public class AcadmeicClass {
 		System.out.println("Gender: " + obj.getGender() );
 		System.out.println("Roll number." + obj.getRollNumber());
 		System.out.println("Grade." + obj.getGrade());
-		System.out.println("Division." + obj.getDivision());
 		System.out.println("Status." + obj.getStatus());
+		System.out.println("Division." + obj.getDivision());
+		
 		System.out.println("AcadmeicClass::printDetail Student Details Ended \n");
 
 	}
@@ -49,23 +54,21 @@ public class AcadmeicClass {
 	 * Asking user to pass rollnumber to remove from storage.
 	 *  once rollnumber is received, start comparing with each objs present  inside  arraylist.
 	 */
-	private  void deleteRecordByRollnumber() {
+	private  void deleteRecordByRollnumber(int rollnumberToDelete) {
   
 		System.out.println("AcadmeicClass::deleteRecordByRollnumber entering into method");
-		Scanner scan = new Scanner(System.in);
 		System.out.println("AcadmeicClass::deleteRecordByRollnumber Enter rollnumber to be delete");
-		int rollnumber = scan.nextInt();
 		int flag=0;
 		for(int i=0; i< studentList.size(); i++) {
-			if( rollnumber == studentList.get(i).getRollNumber()){
+			if( rollnumberToDelete == studentList.get(i).getRollNumber()){
 				studentList.remove(i);
 				flag++;
-				System.out.println("AcadmeicClass::deleteRecordByRollnumber Delete of record for  " + rollnumber + " is successfull");
+				System.out.println("AcadmeicClass::deleteRecordByRollnumber Delete of record for  " + rollnumberToDelete + " is successfull");
 				break;
 			}				
 		}
 		if(flag ==0) {
-			System.out.println("AcadmeicClass::deleteRecordByRollnumber No record present with this  " + rollnumber);
+			System.out.println("AcadmeicClass::deleteRecordByRollnumber No record present with this  " + rollnumberToDelete);
 		}
 		System.out.println("AcadmeicClass::deleteRecordByRollnumber existing from delete record");
 	}
@@ -84,40 +87,62 @@ public class AcadmeicClass {
 		
 		switch (searchChoice) {
 		case 1:
-			searchStudenByRollNumber(scan);
+			System.out.println("AcadmeicClass::searchStudenByRollNumber::Search  by Roll number");
+			int searchRollnumber = scan.nextInt();
+			searchStudenByRollNumber(searchRollnumber);
 			break;
 			
 		case 2: 
-			searchStudentByFullName(scan);
+			System.out.println("AcadmeicClass::searchStudentByFullName::Search  by full name");
+			scan.nextLine();
+			String searchFullName= scan.nextLine();
+			searchStudentByFullName(searchFullName);
 			break;
 			
 		case 3:
-			searchStudenByAge(scan);
+			System.out.println("AcadmeicClass::searchStudenByRollNumber::Enter into search roll number");
+			byte ageFrom = scan.nextByte();
+			System.out.println("AcadmeicClass::searchStudenByAge::Search Age To");
+			byte ageTo= scan.nextByte();
+			searchStudenByAge(ageFrom, ageTo);
 			break;
 			
 		case 4:
-			searchStudentByGrade(scan);
+			System.out.println("AcadmeicClass::searchStudentByGrade::Search  by grade");
+			char searchGrade = 0;
+			scan.nextLine();
+			String x= scan.nextLine();
+			if(x =="") {
+				System.out.println("AcadmeicClass::searchStudentByGrade::Invalid input for grade");
+			}
+			else {
+				 searchGrade = x.charAt(0);
+				 char searchGrade1 = Character.toUpperCase(searchGrade);
+				 searchStudentByGrade(searchGrade1);
+			}
 			break;
 			
 		case 5:
-			searchStudentByStatus(scan);
+			System.out.println("AcadmeicClass::searchStudentByStatus::Search  by Status");
+			scan.nextLine();
+			String searchStatus = scan.nextLine();
+			// converting first char of string into capital.because in get grade class, values set as 'Fail' and 'Pass'
+			String searchStatus1 = Character.toUpperCase(searchStatus.charAt(0))+ searchStatus.substring(1);
+			searchStudentByStatus(searchStatus1);
 			break;
 
 		default:
+			System.out.println(this.getClass().toString()+ "::searchMenu:: Invalid input for search");
 			break;
 		}
-		
 	}
+		
 	
 	// search student details by age :
 	// by passing age range from user, detail of courses lies in arraylist should retrive.
-	private void searchStudenByAge(Scanner scan)
+	private void searchStudenByAge(int ageFrom,int ageTo)
 	{
 		System.out.println("AcadmeicClass::searchStudenByAge::Enter into search age");
-		System.out.println("AcadmeicClass::searcsearchStudenByAgehMenu::Search  Age from");
-		byte ageFrom = scan.nextByte();
-		System.out.println("AcadmeicClass::searchStudenByAge::Search Age To");
-		byte ageTo= scan.nextByte();
 		boolean found = false;
 		if(ageFrom>=3 && ageTo<=100) {
 			for( int i=0 ; i < studentList.size(); i++ )
@@ -127,7 +152,7 @@ public class AcadmeicClass {
 				if( studentList.get(i).getAge()>= ageFrom  && studentList.get(i).getAge()<= ageTo )
 				{
 					found = true;
-					printDetail( studentList.get(i) );
+					printSearchResult(studentList.get(i));
 				}	
 	
 			}	
@@ -143,22 +168,39 @@ public class AcadmeicClass {
 	}
 	
 	/*
+	 * Printing the list of search records by search menu
+	 */
+	private void printSearchResult (StudentAndAcadmicInfo searchbyAgeobj) {
+		searchbyAgeList.clear();
+		searchbyAgeList.add(searchbyAgeobj);
+		//System.out.println("Size of new list  "+ searchbyAgeList.size());
+		if(searchbyAgeList.size()>0) {
+			for( int i=0; i< searchbyAgeList.size(); i++) {
+			printDetail(searchbyAgeList.get(i));
+			}
+		}
+	}
+	
+	
+	/*
 	 * Method for searching  student records by roll number
 	 */
-	private void searchStudenByRollNumber(Scanner scan) {
+	private void searchStudenByRollNumber(int searchRollnumber) {
 		
-		System.out.println("AcadmeicClass::searchStudenByRollNumber::Enter into search roll number");
-		System.out.println("AcadmeicClass::searchStudenByRollNumber::Search  by Roll number");
-		int searchRollnumber = scan.nextInt();
+		System.out.println("AcadmeicClass::searcsearchStudenByAgehMenu::Entered into search by rollnumber");
 		boolean found = false;
+		//int flag=0;
 		if(searchRollnumber >0) {
 			for( int i=0 ; i < studentList.size(); i++ )
 			{
-				 if(studentList.get(i).getRollNumber() == searchRollnumber) {
+				 if( searchRollnumber ==studentList.get(i).getRollNumber()) {
 					 found= true;
-					 printDetail(studentList.get(i));
+					// flag++;
+					 printSearchResult(studentList.get(i));
+					 break;
 				 }
 			}
+			//System.out.println("loop run in search by rollnumber   " + flag);
 		}
 		else {
 			System.out.println("AcadmeicClass::searchStudenByRollNumber:: Rollnumber cannot be < 0");
@@ -172,13 +214,10 @@ public class AcadmeicClass {
 	/*
 	 * Method to search student records by full name
 	 */
-	private void searchStudentByFullName(Scanner scan) {
+	private void searchStudentByFullName(String searchFullName) {
 		System.out.println("AcadmeicClass::searchStudentByFullName::Enter into search by full name");
-		System.out.println("AcadmeicClass::searchStudentByFullName::Search  by full name");
+		
 		boolean found = false;
-		String searchFullName;
-		scan.nextLine();
-			searchFullName= scan.nextLine();
 			if ( searchFullName =="") {
 				System.out.println("AcadmeicClass::searchStudentByFullName::Invalid input for full name");
 			}
@@ -187,7 +226,7 @@ public class AcadmeicClass {
 				{
 					 if(studentList.get(i).getFullName().equals(searchFullName)) {
 						 found= true;
-						 printDetail(studentList.get(i));
+						 printSearchResult(studentList.get(i));
 					 }
 				}
 			}
@@ -200,25 +239,20 @@ public class AcadmeicClass {
 	/*
 	 * Method for searching  student records by Status
 	 */
-	private void searchStudentByStatus(Scanner scan) {
+	private void searchStudentByStatus(String searchStatus1) {
 		
 		System.out.println("AcadmeicClass::searchStudentByStatus::Enter into search by Status");
-		System.out.println("AcadmeicClass::searchStudentByStatus::Search  by Status");
-		scan.nextLine();
-		String searchStatus = scan.nextLine();
-		// converting first char of string into capital.because in get grade class, values set as 'Fail' and 'Pass'
-		String searchStatus1 = Character.toUpperCase(searchStatus.charAt(0))+ searchStatus.substring(1);
 		boolean found = false;
 		System.out.println("input"+ searchStatus1);
 		for( int i=0 ; i < studentList.size(); i++ )
 		{
 			 if(studentList.get(i).getStatus().equals(searchStatus1)) {
 				 found= true;
-				 System.out.println("Found value" + found);
-				 printDetail(studentList.get(i));
+				 //System.out.println("Found value" + found);
+				 printSearchResult(studentList.get(i));
 			 }
 		}
-		 System.out.println("Found value" + found);
+		// System.out.println("Found value" + found);
 		if(found == false) {
 			System.out.println(this.getClass().toString() + "::searchStudentByStatus:: No student found for "+searchStatus1  );
 		}
@@ -228,34 +262,30 @@ public class AcadmeicClass {
 	/*
 	 * Method for searching  student records by Grade
 	 */
-	private void searchStudentByGrade(Scanner scan) {
+	private void searchStudentByGrade(char searchGrade1) {
 		
 		System.out.println("AcadmeicClass::searchStudentByGrade::Enter into search by grade");
-		System.out.println("AcadmeicClass::searchStudentByGrade::Search  by grade");
 		boolean found = false;
-		char searchGrade = 0;
-		scan.nextLine();
-		String x= scan.nextLine();
-		if(x =="") {
-			System.out.println("AcadmeicClass::searchStudentByGrade::Invalid input for grade");
-		}
-		else {
-		 searchGrade = x.charAt(0);
-		 char searchGrade1 = Character.toUpperCase(searchGrade);
+		
 			for( int i=0 ; i < studentList.size(); i++ )
 			{
 				 if(studentList.get(i).getGrade() == searchGrade1) {
 					 found= true;
-					 printDetail(studentList.get(i));
+					 printSearchResult(studentList.get(i));
 				 }
 			}
-		}
 		if(found == false) {
-			System.out.println(this.getClass().toString() + "::searchStudentByGrade:: No student found for "+searchGrade);
+			System.out.println(this.getClass().toString() + "::searchStudentByGrade:: No student found for "+searchGrade1);
 		}
 		System.out.println("AcadmeicClass::searchStudentByGrade::existing into search by Grade");
 	}
 	
+	/*
+	 * Show toppers list from the student records
+	 */
+	private void showToppers() {
+		
+	}
 	
 	private void addStudentDetail()
 	{
@@ -326,7 +356,9 @@ public class AcadmeicClass {
 			System.out.println("AcadmeicClass::studentMenu 2. Show");
 			System.out.println("AcadmeicClass::studentMenu 3. Delete record by rollnumber");
 			System.out.println("AcadmeicClass::studentMenu 4. Search");
+			System.out.println("AcadmeicClass::studentMenu 5. Show Toppers");
 			int choice = scan.nextInt();
+			scan.nextLine();
 			switch( choice )
 			{
 			case 1:
@@ -336,16 +368,19 @@ public class AcadmeicClass {
 				showStudentDetail();
 				break;
 			case 3:
-				deleteRecordByRollnumber();
+				Scanner scan1 = new Scanner(System.in);
+				int rollnumberToDelete = scan.nextInt();
+				deleteRecordByRollnumber(rollnumberToDelete);
 				break;
 			case 4:
 				searchMenu();
 				break;
-				
+			case 5:
+				showToppers();
+				break;
 			default:
 				System.out.println("AcadmeicClass::studentMenu  Invalid choice.");
 			}
-			scan.nextLine();
 			System.out.println("AcadmeicClass::studentMenu Want to Enter More.Press Y for continue else press any char ");
 
 			/* 
